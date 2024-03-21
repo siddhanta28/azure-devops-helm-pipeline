@@ -1,0 +1,25 @@
+pool:
+  vmImage: 'ubuntu-latest'
+steps:
+- task: HelmInstaller@1
+  inputs:
+    helmVersionToInstall: 'latest'
+- task: HelmDeploy@0
+  displayName: Helm package
+  inputs:
+    connectionType: None
+    command: package
+    chartPath: charts/$(Build.Repository.Name)
+    destination: $(Build.ArtifactStagingDirectory)
+    save: false
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: "$(build.sourcesdirectory)"
+    Contents: | 
+      service/**
+      **/override*.yaml
+    TargetFolder: "$(build.artifactstagingdirectory)"
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: "$(build.artifactstagingdirectory)"
+    ArtifactName: "continous-integration"

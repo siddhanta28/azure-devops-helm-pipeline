@@ -1,0 +1,60 @@
+trigger:
+  branches:
+    include:
+      - master
+  batch: true
+  # Enable continuous integration
+  continuousIntegration: true
+name: $(date:yyyyMMdd)$(rev:.r)-$(Build.SourceBranchName)
+jobs:
+- job: Job_1
+  displayName: Agent job 1
+  pool:
+    vmImage: ubuntu-20.04
+  steps:
+  - checkout: self
+    clean: true
+    fetchTags: true
+  - task: NodeTool@0
+    displayName: Use Node 8.x
+    inputs:
+      versionSpec: 8.x
+  - task: Npm@1
+    displayName: npm install
+    inputs:
+      workingDir: .
+      verbose: false
+  - task: Npm@1
+    displayName: npm build
+    enabled: False
+    inputs:
+      command: custom
+      workingDir: .
+      verbose: false
+      customCommand: run build
+  - task: Npm@1
+    displayName: npm test
+    enabled: False
+    inputs:
+      command: custom
+      workingDir: .
+      verbose: false
+      customCommand: test
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: $(Build.SourcesDirectory)/content'
+    enabled: False
+    inputs:
+      SourceFolder: $(Build.SourcesDirectory)
+      TargetFolder: $(Build.SourcesDirectory)/content
+      CleanTargetFolder: true
+  - task: ArchiveFiles@2
+    displayName: Archive $(Build.SourcesDirectory)
+    inputs:
+      rootFolderOrFile: $(Build.SourcesDirectory)
+      archiveType: tar
+      archiveFile: $(Build.ArtifactStagingDirectory)/nsdlapi.tar.gz
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
+    inputs:
+      FileCopyOptions: ''
+...

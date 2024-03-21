@@ -1,0 +1,15 @@
+apiVersion: v1
+name: support-ypay
+version: '0.0.2'
+description: support-ypay
+keywords:
+  - React
+  - NonAirAttachments
+  - support-ypay  
+sources:
+  - A list of URLs to source code for this project (optional)
+maintainers:
+  - name: siddhanta
+    email: siddhanta.tripathi@ypaycard.com
+engine: gotpl 
+tillerVersion: '>2.0.0'

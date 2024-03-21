@@ -1,0 +1,15 @@
+ingress:
+  hosts:
+    - stg.ypay.tech
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 85
+  targetMemoryUtilizationPercentage: 85
+
+#env:
+#  NODE_ENV: staging
+env:
+  ENV_NAME: staging

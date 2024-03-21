@@ -1,0 +1,14 @@
+ingress:
+  hosts:
+    - test.ypay.tech
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 85
+  targetMemoryUtilizationPercentage: 85
+
+#env:
+#  NODE_ENV: test
+env:
+  ENV_NAME: test
